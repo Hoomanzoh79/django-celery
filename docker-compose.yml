@@ -1,14 +1,28 @@
 version: "3.8"
 
 services:
+  redis:
+    image: redis:7.0.11-alpine
+
   django:
     container_name: django
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python /code/manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./core:/app/
+      - .:/code
     ports:
       - "8000:8000"
     environment:
       - SECRET_KEY=test
       - DEBUG=True
+    depends_on:
+      - redis
+
+  celery:
+    container_name: celery
+    build: .
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
+      - django
