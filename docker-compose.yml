@@ -21,6 +21,7 @@ services:
   celery:
     container_name: celery
     build: .
+    command: celery --app=core worker -l INFO
     volumes:
       - .:/code
     depends_on:
