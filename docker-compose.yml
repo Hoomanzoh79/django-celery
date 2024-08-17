@@ -21,7 +21,7 @@ services:
   celery:
     container_name: celery1
     build: .
-    command: celery --app=core worker -l INFO
+    command: celery --app=core worker -l INFO -Q queue1
     volumes:
       - .:/code
     depends_on:
@@ -33,7 +33,7 @@ services:
     build:
       context: ./standalone-cworker
       dockerfile: Dockerfile
-    command: celery -A celerytask worker --loglevel=INFO
+    command: celery -A celerytask worker --loglevel=INFO -Q queue2
     volumes:
       - ./standalone-cworker:/code
     depends_on:
