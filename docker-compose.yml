@@ -21,21 +21,21 @@ services:
   celery:
     container_name: celery1
     build: .
-    command: celery --app=core worker -l INFO -Q queue1
+    command: celery --app=core worker -l INFO -Q celery,celery:1,celery:2,celery:3
     volumes:
       - .:/code
     depends_on:
       - redis
       - django
 
-  celery2:
-    container_name: celery2
-    build:
-      context: ./standalone-cworker
-      dockerfile: Dockerfile
-    command: celery -A celerytask worker --loglevel=INFO -Q queue2
-    volumes:
-      - ./standalone-cworker:/code
-    depends_on:
-      - redis
-      - django
+  # celery2:
+  #   container_name: celery2
+  #   build:
+  #     context: ./standalone-cworker
+  #     dockerfile: Dockerfile
+  #   command: celery -A celerytask worker --loglevel=INFO -Q queue2
+  #   volumes:
+  #     - ./standalone-cworker:/code
+  #   depends_on:
+  #     - redis
+  #     - django
